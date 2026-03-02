@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Domus Orbis | Fine Dining</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+background:#0a0a0a;
+color:#f5f5f5;
+font-family:'Montserrat', sans-serif;
+overflow-x:hidden;
+}
+
+header{
+padding:160px 20px;
+text-align:center;
+background:radial-gradient(circle at center,#111 0%,#000 100%);
+animation:fadeIn 1.5s ease-in-out;
+}
+
+header h1{
+font-family:'Cormorant Garamond', serif;
+font-size:72px;
+letter-spacing:8px;
+margin:0;
+}
+
+header p{
+margin-top:20px;
+font-size:18px;
+color:#c6a75e;
+letter-spacing:3px;
+}
+
+.language-switch{
+position:absolute;
+top:20px;
+right:20px;
+}
+
+.language-switch button{
+background:none;
+border:1px solid #c6a75e;
+color:#c6a75e;
+padding:6px 12px;
+margin-left:5px;
+cursor:pointer;
+}
+
+.menu-buttons{
+text-align:center;
+margin:80px 0 40px 0;
+}
+
+.menu-buttons button{
+background:none;
+border:none;
+color:#c6a75e;
+margin:15px;
+font-size:18px;
+letter-spacing:2px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.menu-buttons button:hover{
+color:white;
+}
+
+.section{
+display:none;
+max-width:900px;
+margin:auto;
+padding:40px 20px;
+}
+
+.item{
+margin-bottom:40px;
+padding-bottom:20px;
+border-bottom:1px solid rgba(198,167,94,0.2);
+opacity:0;
+transform:translateY(20px);
+transition:all 0.6s ease;
+}
+
+.item.visible{
+opacity:1;
+transform:translateY(0);
+}
+
+.item-title{
+display:flex;
+justify-content:space-between;
+font-size:19px;
+font-weight:500;
+}
+
+.price{
+color:#c6a75e;
+}
+
+.description{
+font-size:14px;
+opacity:0.85;
+margin-top:10px;
+line-height:1.7;
+}
+
+.reservas{
+background:#111;
+padding:100px 20px;
+text-align:center;
+}
+
+.reservas h2{
+font-family:'Cormorant Garamond', serif;
+font-size:40px;
+letter-spacing:4px;
+margin-bottom:40px;
+}
+
+.reservas input{
+display:block;
+margin:15px auto;
+padding:12px;
+width:300px;
+background:#0a0a0a;
+border:1px solid #c6a75e;
+color:white;
+}
+
+.reservas button{
+margin-top:20px;
+padding:12px 40px;
+background:#c6a75e;
+border:none;
+cursor:pointer;
+font-weight:bold;
+}
+
+footer{
+text-align:center;
+padding:40px;
+background:#000;
+color:#777;
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="language-switch">
+<button onclick="setLanguage('es')">ES</button>
+<button onclick="setLanguage('en')">EN</button>
+</div>
+
+<header>
+<h1>DOMUS ORBIS</h1>
+<p id="subtitle">EL HOGAR DEL MUNDO — EXPERIENCIA GASTRONÓMICA INTERNACIONAL</p>
+</header>
+
+<div class="menu-buttons">
+<button onclick="showSection('entradas')">Entradas</button>
+<button onclick="showSection('fondos')">Platos Principales</button>
+<button onclick="showSection('postres')">Postres</button>
+<button onclick="showSection('bebidas')">Bebidas</button>
+</div>
+
+<!-- TODAS LAS SECCIONES (MENÚ COMPLETO QUE YA TENÍAS) -->
+<!-- NO ELIMINÉ NINGÚN PLATO -->
+<div id="entradas" class="section"></div>
+<div id="fondos" class="section"></div>
+<div id="postres" class="section"></div>
+<div id="bebidas" class="section"></div>
+
+<div class="reservas">
+<h2 id="reservaTitle">RESERVAS</h2>
+<input type="text" id="nombre" placeholder="Nombre">
+<input type="date" id="fecha">
+<input type="time" id="hora">
+<input type="number" id="personas" placeholder="Personas">
+<button onclick="enviarReserva()">RESERVAR</button>
+</div>
+
+<footer>
+DOMUS ORBIS — FINE DINING EXPERIENCE<br>
+© 2026 ALL RIGHTS RESERVED
+</footer>
+
+<script>
+
+// MENÚ COMPLETO EN DOS IDIOMAS
+const menu = {
+es: {
+entradas: [
+["Ceviche Limeño","Pescado fresco marinado en limón y ají, acompañado de crocante de maíz morado y microvegetales.","38 soles"],
+["Bruschetta Tradicional","Pan artesanal tostado con tomate fresco, albahaca y aceite de oliva premium.","30 soles"],
+["Gazpacho Andaluz","Sopa fría de tomate y pimiento con aceite de oliva virgen extra.","28 soles"],
+["Sushi Nigiri Deluxe","Selección de nigiris de pescado fresco con soja ligera.","38 soles"],
+["Mini Quiche Lorraine","Tartaletas francesas de huevo, crema y tocino.","27 soles"],
+["Spring Rolls de Langostino","Rollos crujientes rellenos de langostino con salsa agridulce.","32 soles"],
+["Meze de Hummus y Baba Ganoush","Purés mediterráneos con pan pita artesanal.","29 soles"]
+],
+fondos: [
+["Lomo Saltado Gourmet","Lomo tierno salteado con vegetales y puré de camote.","70 soles"],
+["Ravioli de Ricotta y Trufa","Pasta fresca rellena con trufa negra.","68 soles"],
+["Paella Imperial","Arroz Bomba con mariscos y azafrán.","70 soles"],
+["Beef Wellington Real","Filete premium envuelto en hojaldre.","72 soles"],
+["Ramen del Emperador","Caldo concentrado con cerdo marinado.","62 soles"],
+["Pad Thai Royal","Fideos salteados con langostinos.","68 soles"],
+["Boeuf Bourguignon Select","Estofado francés en vino tinto.","68 soles"]
+],
+postres: [
+["Suspiro a la Limeña","Crema dulce con merengue italiano.","24 soles"],
+["Tiramisu Reale","Bizcocho con mascarpone y cacao.","25 soles"],
+["Churros con Oro","Churros artesanales con chocolate.","22 soles"],
+["Mochi Imperial","Bolitas rellenas de té verde.","20 soles"],
+["Crème Brûlée Royale","Crema con caramelo crocante.","25 soles"],
+["Sticky Toffee Pudding Deluxe","Bizcocho húmedo con toffee.","27 soles"],
+["Khanom Buang Real","Crepes tailandeses con coco.","22 soles"]
+],
+bebidas: [
+["Pisco Sour Imperial","Cóctel clásico peruano premium.","35 soles"],
+["Negroni Deluxe","Ginebra, vermut y Campari.","38 soles"],
+["Sangría Royale","Vino tinto con frutas.","32 soles"],
+["Sake Premium","Sake refinado japonés.","40 soles"],
+["Champagne Brut Élite","Champagne francés selecto.","48 soles"],
+["Gin Tonic Imperial","Gin con tónica premium.","40 soles"],
+["Té Helado Thai","Té especiado con leche.","29 soles"]
+]
+},
+en: {
+entradas: [
+["Lime Ceviche","Fresh fish marinated in lime and chili.","38 soles"],
+["Traditional Bruschetta","Toasted artisan bread with tomato and basil.","30 soles"],
+["Andalusian Gazpacho","Cold tomato soup with extra virgin olive oil.","28 soles"],
+["Deluxe Nigiri Sushi","Selection of fresh fish nigiri.","38 soles"],
+["Mini Quiche Lorraine","French tartlets with egg and bacon.","27 soles"],
+["Shrimp Spring Rolls","Crispy rolls with sweet chili sauce.","32 soles"],
+["Hummus & Baba Ganoush Meze","Mediterranean purées with pita bread.","29 soles"]
+],
+fondos: [
+["Gourmet Lomo Saltado","Tender beef sautéed with vegetables.","70 soles"],
+["Ricotta & Truffle Ravioli","Fresh pasta filled with black truffle.","68 soles"],
+["Imperial Paella","Bomba rice with seafood and saffron.","70 soles"],
+["Royal Beef Wellington","Premium fillet wrapped in puff pastry.","72 soles"],
+["Emperor Ramen","Rich broth with marinated pork.","62 soles"],
+["Royal Pad Thai","Stir-fried noodles with shrimp.","68 soles"],
+["Boeuf Bourguignon","French red wine beef stew.","68 soles"]
+],
+postres: [
+["Peruvian Suspiro","Sweet cream with Italian meringue.","24 soles"],
+["Royal Tiramisu","Coffee soaked sponge with mascarpone.","25 soles"],
+["Golden Churros","Artisan churros with chocolate.","22 soles"],
+["Imperial Mochi","Green tea filled rice balls.","20 soles"],
+["Royal Crème Brûlée","Custard with caramel crust.","25 soles"],
+["Sticky Toffee Pudding","Moist cake with toffee sauce.","27 soles"],
+["Khanom Buang","Thai coconut crepes.","22 soles"]
+],
+bebidas: [
+["Imperial Pisco Sour","Premium Peruvian cocktail.","35 soles"],
+["Deluxe Negroni","Gin, vermouth and Campari.","38 soles"],
+["Royal Sangria","Red wine with fruits.","32 soles"],
+["Premium Sake","Refined Japanese sake.","40 soles"],
+["Elite Champagne","Selected French champagne.","48 soles"],
+["Imperial Gin & Tonic","Premium gin and tonic.","40 soles"],
+["Thai Iced Tea","Spiced black tea with milk.","29 soles"]
+]
+}
+};
+
+let currentLang="es";
+
+function renderMenu(){
+for(let section in menu[currentLang]){
+let container=document.getElementById(section);
+container.innerHTML="";
+menu[currentLang][section].forEach(item=>{
+container.innerHTML+=`
+<div class="item">
+<div class="item-title">${item[0]} <span class="price">${item[2]}</span></div>
+<div class="description">${item[1]}</div>
+</div>`;
+});
+}
+observeItems();
+}
+
+function showSection(id){
+document.querySelectorAll('.section').forEach(s=>s.style.display="none");
+document.getElementById(id).style.display="block";
+}
+
+function setLanguage(lang){
+currentLang=lang;
+document.getElementById("subtitle").innerText=
+lang==="es"?
+"EL HOGAR DEL MUNDO — EXPERIENCIA GASTRONÓMICA INTERNACIONAL":
+"THE HOME OF THE WORLD — INTERNATIONAL GASTRONOMIC EXPERIENCE";
+renderMenu();
+}
+
+function enviarReserva(){
+let nombre=document.getElementById("nombre").value;
+let fecha=document.getElementById("fecha").value;
+let hora=document.getElementById("hora").value;
+let personas=document.getElementById("personas").value;
+
+let mensaje=`Reserva Domus Orbis:%0A
+Nombre: ${nombre}%0A
+Fecha: ${fecha}%0A
+Hora: ${hora}%0A
+Personas: ${personas}`;
+
+window.open(`https://wa.me/51961354650?text=${mensaje}`);
+}
+
+function observeItems(){
+let items=document.querySelectorAll('.item');
+items.forEach(item=>{
+setTimeout(()=>item.classList.add("visible"),100);
+});
+}
+
+renderMenu();
+showSection('entradas');
+
+</script>
+
+</body>
+</html>
